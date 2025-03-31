@@ -1,0 +1,144 @@
+@startuml
+
+title __A small dungeon crawler UML class diagram__\n
+
+  namespace defetivelyNotZelda {
+    enum Direction {
+      EAST
+      NORTH
+      SOUTH
+      WEST
+      frameLineNumber
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    interface Displayable {
+        {abstract} + draw()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class DynamicSprite {
+        - isWalking : boolean
+        - speed : double
+        - spriteSheetNumberOfColumn : int
+        - timeBetweenFrame : double
+        + DynamicSprite()
+        + draw()
+        + moveIfPossible()
+        + setDirection()
+        - isMovingPossible()
+        - move()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    interface Engine {
+        {abstract} + update()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class GameEngine {
+        + GameEngine()
+        + keyPressed()
+        + keyReleased()
+        + keyTyped()
+        + update()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class Main {
+        ~ displayZoneFrame : JFrame
+        + Main()
+        {static} + main()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class PhysicEngine {
+        - environment : ArrayList<Sprite>
+        - movingSpriteList : ArrayList<DynamicSprite>
+        + PhysicEngine()
+        + addToEnvironmentList()
+        + addToMovingSpriteList()
+        + setEnvironment()
+        + update()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class Playground {
+        - environment : ArrayList<Sprite>
+        + Playground()
+        + getSolidSpriteList()
+        + getSpriteList()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class RenderEngine {
+        - renderList : ArrayList<Displayable>
+        + RenderEngine()
+        + addToRenderList()
+        + addToRenderList()
+        + paint()
+        + update()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class SolidSprite {
+        + SolidSprite()
+        + getHitBox()
+        + intersect()
+    }
+  }
+  
+
+  namespace defetivelyNotZelda {
+    class Sprite {
+        # height : double
+        # image : Image
+        # width : double
+        # x : double
+        # y : double
+        + Sprite()
+        + draw()
+    }
+  }
+  
+
+  defetivelyNotZelda.DynamicSprite -up-|> defetivelyNotZelda.SolidSprite
+  defetivelyNotZelda.DynamicSprite o-- defetivelyNotZelda.Direction : direction
+  defetivelyNotZelda.GameEngine .up.|> defetivelyNotZelda.Engine
+  defetivelyNotZelda.GameEngine .up.|> java.awt.event.KeyListener
+  defetivelyNotZelda.GameEngine o-- defetivelyNotZelda.DynamicSprite : hero
+  defetivelyNotZelda.Main o-- defetivelyNotZelda.GameEngine : gameEngine
+  defetivelyNotZelda.Main o-- defetivelyNotZelda.PhysicEngine : physicEngine
+  defetivelyNotZelda.Main o-- defetivelyNotZelda.RenderEngine : renderEngine
+  defetivelyNotZelda.PhysicEngine .up.|> defetivelyNotZelda.Engine
+  defetivelyNotZelda.RenderEngine .up.|> defetivelyNotZelda.Engine
+  defetivelyNotZelda.RenderEngine -up-|> javax.swing.JPanel
+  defetivelyNotZelda.SolidSprite -up-|> defetivelyNotZelda.Sprite
+  defetivelyNotZelda.Sprite .up.|> defetivelyNotZelda.Displayable
+
+
+right footer
+
+(c) Antoine Tauvel for ENSEA 2024 Java LABS
+Enjoy coding !
+endfooter
+
+@enduml
