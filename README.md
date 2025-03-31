@@ -20,7 +20,7 @@ The game features a hero navigating through multiple levels, avoiding traps, def
 ## 🛠️ Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/your-repository.git
+   git clone https://github.com/ACHRAFAHAL/Dungeon_crawler.git
    ```
 2. Open the project in an IDE (IntelliJ IDEA, Eclipse, or VS Code with Java extensions, ...).
 3. Ensure you have Java installed (Java 8 or later).
