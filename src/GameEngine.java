@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class GameEngine implements KeyListener, Engine {
     private DynamicSprite hero;
-    private DynamicSprite enemy;
+    private ArrayList<DynamicSprite> enemies; // Changed to ArrayList
     private Main main;
     private PhysicEngine physicEngine;
     private RenderEngine renderEngine;
@@ -13,11 +13,11 @@ public class GameEngine implements KeyListener, Engine {
 
     private static final long GAME_DURATION = 60 * 1000;
 
-    // Constructor accepts both hero and enemy.
-    public GameEngine(DynamicSprite hero, DynamicSprite enemy, Main main,
+    // Constructor accepts a list of enemies
+    public GameEngine(DynamicSprite hero, ArrayList<DynamicSprite> enemies, Main main,
                       PhysicEngine physicEngine, RenderEngine renderEngine) {
         this.hero = hero;
-        this.enemy = enemy;
+        this.enemies = enemies != null ? enemies : new ArrayList<>();
         this.main = main;
         this.physicEngine = physicEngine;
         this.renderEngine = renderEngine;
@@ -31,19 +31,24 @@ public class GameEngine implements KeyListener, Engine {
     public void update() {
         hero.updateInvincibility();
 
-        if (enemy != null && !enemy.isDead()) {
-            enemy.updateFollow(hero);
+        // Update all enemies
+        for (DynamicSprite enemy : enemies) {
+            if (!enemy.isDead()) {
+                enemy.updateFollow(hero);
+            }
         }
 
-        // Check collision between enemy and hero
-        if (enemy != null && !enemy.isDead()) {
-            Rectangle2D heroBox = hero.getHitBox();
-            Rectangle2D enemyBox = enemy.getHitBox();
-            if (heroBox.intersects(enemyBox)) {
-                hero.takeDamage(hero.getMaxHealth());
-                SoundManager.playSound("./sound/MarioFall.wav");
-                main.gameOver();
-                return;
+        // Check collision between all enemies and hero
+        for (DynamicSprite enemy : enemies) {
+            if (!enemy.isDead()) {
+                Rectangle2D heroBox = hero.getHitBox();
+                Rectangle2D enemyBox = enemy.getHitBox();
+                if (heroBox.intersects(enemyBox)) {
+                    hero.takeDamage(hero.getMaxHealth());
+                    SoundManager.playSound("./sound/MarioFall.wav");
+                    main.gameOver();
+                    return;
+                }
             }
         }
 
@@ -113,8 +118,11 @@ public class GameEngine implements KeyListener, Engine {
                 hero.setDirection(Direction.EAST);
                 break;
             case KeyEvent.VK_CONTROL:
-                hero.setSpeed(15);
+                hero.setSpeed(10);
                 break;
+            // Test key for game complete screen
+            case KeyEvent.VK_F :
+                main.gameComplete();
         }
     }
 

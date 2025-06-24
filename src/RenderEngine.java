@@ -1,23 +1,23 @@
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class RenderEngine extends JPanel implements Engine {
     private JFrame frame;
     private ArrayList<Displayable> renderList;
     private DynamicSprite hero;
-    private DynamicSprite enemy;
+    private ArrayList<DynamicSprite> enemies; // Changed to ArrayList
     private long gameStartTime;
     private Main main;
 
     private long lastFrameTime = System.currentTimeMillis();
     private double fps = 0;
 
-    // Constructor now accepts both hero and enemy.
-    public RenderEngine(JFrame jFrame, DynamicSprite hero, DynamicSprite enemy, long gameStartTime, Main main) {
+    // Constructor now accepts a list of enemies
+    public RenderEngine(JFrame jFrame, DynamicSprite hero, ArrayList<DynamicSprite> enemies, long gameStartTime, Main main) {
         this.frame = jFrame;
         this.hero = hero;
-        this.enemy = enemy;
+        this.enemies = enemies != null ? enemies : new ArrayList<>();
         this.gameStartTime = gameStartTime;
         this.main = main;
         renderList = new ArrayList<>();
@@ -44,10 +44,14 @@ public class RenderEngine extends JPanel implements Engine {
             renderObject.draw(g);
         }
 
-
         hero.draw(g);
 
-        enemy.draw(g);
+        // Draw all enemies
+        for (DynamicSprite enemy : enemies) {
+            if (!enemy.isDead()) {
+                enemy.draw(g);
+            }
+        }
 
 
         // FPS

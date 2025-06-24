@@ -1,0 +1,9 @@
+TTTTTTTTTTTT
+T    X   X T
+T  T   T   T
+T     XR  .T
+T  T   T  TT
+T    X   X T
+T  TTTTT   T
+T          T
+TTTTTTTTTTTT
